@@ -1,0 +1,11 @@
+{
+  "name": "capital-kitchen",
+  "version": "1.0.0",
+  "description": "online collection of restaurants where buyers can order food",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "wayungi",
+  "license": "ISC"
+}
