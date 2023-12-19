@@ -1,4 +1,3 @@
-const { log } = require('util');
 const logEvent = require('./logEvent.js')
 const EventEmitter =  require('events')
 
