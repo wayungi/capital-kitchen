@@ -37,7 +37,14 @@ app.get('^/$|index(.html)?', (req, res) => {
 
 
 app.all('*', (req, res) => { // catch all route
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))   
+    res.status(404)
+    if(req.accepts('html'))  {
+        res.sendFile(path.join(__dirname, 'views', '404.html'))
+    } else if (req.accepts('json')) {
+        res.json({error: 'Not found'})
+    } else {
+        res.type('txt').send('Not found')
+    }
 })
 
 // class MyEmitter extends EventEmitter {}
