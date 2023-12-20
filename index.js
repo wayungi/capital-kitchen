@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const { logger } = require('./middleware/logEvent.js')
+const { logger } = require('./middleware/logEvent')
+const errorHandler  = require('./middleware/errorHandler')
 const path =  require('path')
 const PORT = process.env.PORT || 3000
 const cors =  require('cors')
@@ -35,7 +36,7 @@ app.get('^/$|index(.html)?', (req, res) => {
 })
 
 
-app.get('/*', (req, res) => { // catch all route
+app.all('*', (req, res) => { // catch all route
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))   
 })
 
@@ -52,9 +53,5 @@ app.get('/*', (req, res) => { // catch all route
 // })
 
 // error handling for the app
-app.use((err, req, res) => {
-    console.error(err.stack)
-    res.status(500).send(err.message)
-})
-
+app.use(errorHandler)
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`))
