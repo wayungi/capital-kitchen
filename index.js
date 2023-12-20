@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '/public'))) // serve static files
 const allowedList = ['http://127.0.0.1:3000', 'https://regex101.com', 'http://localhost:3000']
 const corsOptions = {
     origin: (origin, callback) => {
-        if (allowedList.indexOf(origin)!== -1) {
+        if (allowedList.indexOf(origin)!== -1 || !origin) { //only in development should you allow !origin
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
@@ -25,7 +25,7 @@ const corsOptions = {
     },
     optionsSuccessStatus: 2000
 }
-app.use(cors())
+app.use(cors(corsOptions))
 
 app.get('^/$|index(.html)?', (req, res) => {
     // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url
@@ -50,5 +50,11 @@ app.get('/*', (req, res) => { // catch all route
 // const server = http.createServer((req, res) => {
 //     console.log(req.url, req.method)
 // })
+
+// error handling for the app
+app.use((err, req, res) => {
+    console.error(err.stack)
+    res.status(500).send(err.message)
+})
 
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`))
