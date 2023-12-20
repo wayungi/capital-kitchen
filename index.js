@@ -8,11 +8,23 @@ const cors =  require('cors')
 
 //custom middleware
 app.use(logger)
-
-// custom middleware
+// inbuilt middleware
 app.use(express.urlencoded({extended: false})) // gets form data
 app.use(express.json()) // gets json data
 app.use(express.static(path.join(__dirname, '/public'))) // serve static files
+
+/*
+ the '/', above indicate the directory in which the files should be able to referecence files in the public folder
+ app.use('/subdir', express.static(path.join(__dirname, '/public'))) view files in subdir will reference static files like './css/styles.css' 
+ app.use('/', express.static(path.join(__dirname, '/public'))) // serve static files
+ 
+*/ 
+
+// routing
+app.use('/restaurants', require('./routes/restaurants'))
+app.use('/menu', require('./routes/menu'))
+app.use('/auth', require('./routes/auth'))
+app.use('/users', require('./routes/users'))
 
 // third party middleware
 const allowedList = ['http://127.0.0.1:3000', 'https://regex101.com', 'http://localhost:3000']

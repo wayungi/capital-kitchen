@@ -1,6 +1,8 @@
 const express =  require('express')
-const route =  express.Router()
+const router =  express.Router()
 const path =  require('path')
+
+router.route('/')
 
 // view favuorite restaurnats
 

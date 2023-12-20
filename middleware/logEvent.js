@@ -20,7 +20,7 @@ const logEvent = async (message, writeTofile) => {
 
 const logger = (req, res, next) => {
     logEvent(`${req.method}\t${req.headers.origin}\t${req.url}`, 'logs.txt');
-    console.log(`${req.method}\t${req.headers.origin}\t${req.url}`)
+    // console.log(`${req.method}\t${req.headers.origin}\t${req.url}`)
     next();
 }
 
