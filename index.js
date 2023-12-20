@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const logEvent = require('./logEvent.js')
+const logEvent = require('./middleware/logEvent.js')
 const EventEmitter =  require('events')
 const fsPromises = require('fs').promises
 const path =  require('path')
