@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
-const logEvent = require('./middleware/logEvent.js')
-const EventEmitter =  require('events')
-const fsPromises = require('fs').promises
+const { logger } = require('./middleware/logEvent.js')
 const path =  require('path')
-const http = require('http')
 const PORT = process.env.PORT || 3000
+
+//custom middleware
+app.use(logger)
 
 // middleware
 app.use(express.urlencoded({extended: false})) // gets form data
