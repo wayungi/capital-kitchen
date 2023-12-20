@@ -3,14 +3,30 @@ const app = express()
 const { logger } = require('./middleware/logEvent.js')
 const path =  require('path')
 const PORT = process.env.PORT || 3000
+const cors =  require('cors')
 
 //custom middleware
 app.use(logger)
 
-// middleware
+// custom middleware
 app.use(express.urlencoded({extended: false})) // gets form data
 app.use(express.json()) // gets json data
 app.use(express.static(path.join(__dirname, '/public'))) // serve static files
+
+// third party middleware
+const allowedList = ['http://127.0.0.1:3000', 'https://regex101.com', 'http://localhost:3000']
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (allowedList.indexOf(origin)!== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    optionsSuccessStatus: 2000
+}
+app.use(cors())
+
 app.get('^/$|index(.html)?', (req, res) => {
     // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url
     // res.sendFile('./views/index.html', { root: __dirname })
