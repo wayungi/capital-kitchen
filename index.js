@@ -7,6 +7,10 @@ const path =  require('path')
 const http = require('http')
 const PORT = process.env.PORT || 3000
 
+// middleware
+app.use(express.urlencoded({extended: false})) // gets form data
+app.use(express.json()) // gets json data
+app.use(express.static(path.join(__dirname, '/public'))) // serve static files
 app.get('^/$|index(.html)?', (req, res) => {
     // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url
     // res.sendFile('./views/index.html', { root: __dirname })
@@ -15,7 +19,7 @@ app.get('^/$|index(.html)?', (req, res) => {
 })
 
 
-app.get('/*', (req, res) => {
+app.get('/*', (req, res) => { // catch all route
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))   
 })
 
