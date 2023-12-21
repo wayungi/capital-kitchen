@@ -3,7 +3,7 @@ const data = [
         "id": "1",
         "name": "beef steak",
         "price": 12000,
-        "restaurant": "1",
+        "restaurantId": "1",
         "path": "https://picsum.photos/200",
         "desc": "Grilled steaks"
     },
@@ -11,7 +11,7 @@ const data = [
         "id": "2",
         "name": "chicken",
         "price": 5000,
-        "restaurant": "1",
+        "restaurantId": "1",
         "path": "https://picsum.photos/200",
         "desc": "Freshly deep fried chicken thigh"
     },
@@ -20,7 +20,7 @@ const data = [
         "id": "3",
         "name": "chicken",
         "price": 6000,
-        "restaurant": "2",
+        "restaurantId": "2",
         "path": "https://picsum.photos/200",
         "desc": "Freshly roasted chicken wing / thigh"
     },
@@ -28,7 +28,7 @@ const data = [
         "id": "4",
         "name": "pork",
         "price": 15000,
-        "restaurant": "2",
+        "restaurantId": "2",
         "path": "https://picsum.photos/200",
         "desc": "Roasted pork stick"
     }
