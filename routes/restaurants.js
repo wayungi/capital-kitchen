@@ -53,25 +53,23 @@ router.route('/:id')
     // disable restaurant
 router.route('/:id/disable')
     .post( (req, res) => {
-        const id = req.params.id
-        const restaurant = data.restaurants.find((restaurant) => restaurant.id === id)
+        let restaurant = data.restaurants.find((restaurant) => restaurant.id === req.params.id)
         if(!restaurant) res.status('404').json({"response": "Not Found"})
-
-        restaurant.status = "down"
-        // data.restaurants = [...data.restaurants.filter((restaurant) => restaurant == )]
-
-
-        res.json({
-            "state": "disabled"
-        })
+        if(restaurant.status === "down") res.status(209).json({"response": "Restaurant is already down "})
+        restaurant = {...restaurant, status: "down"}
+        data.restaurants = [...data.restaurants.filter((item) => item.id !== restaurant.id ), restaurant]
+        res.json({ "response": restaurant })
     })
 
     // enable restaurant
 router.route('/:id/enable')
     .post((req, res) => {
-        res.json({
-            "state": "enabled"
-        })
+        let restaurant = data.restaurants.find((restaurant) => restaurant.id === req.params.id)
+        if(!restaurant) res.status('404').json({"response": "Not Found"})
+        if(restaurant.status === "up") res.status(209).json({"response": "Restaurant is already up "})
+        restaurant = {...restaurant, status: "up"}
+        data.restaurants = [...data.restaurants.filter((item) => item.id !== restaurant.id ), restaurant]
+        res.json({ "response": restaurant })
     })
 
 
