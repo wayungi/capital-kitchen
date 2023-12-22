@@ -3,6 +3,7 @@ const data = {
         {
             orderId: "1",
             userId: "10",
+            status: "resolved",
             items: [
                 {
                     itemId: "1",
@@ -24,6 +25,7 @@ const data = {
         {
             orderId: "2",
             userId: "12",
+            status: "rejected",
             items: [
                 {
                     itemId: "2",
