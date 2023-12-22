@@ -4,7 +4,15 @@ const { v4: uuid } =  require('uuid')
 
 const data = require('../public/data/orders')
 
+router.route('/:status')
+    // get all orders
+    .get((req, res) => {
 
+        console.log("here")
+        const orders =  data.orders.filter((order) => order.status === req.params.status)
+        if(!orders) res.status(200).json({"response": "No order available for this user"})
+        res.status(200).json({"response": orders})
+    })
 
 router.route('/:userId')
     // order food
