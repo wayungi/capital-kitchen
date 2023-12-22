@@ -3,8 +3,7 @@ const router = express.Router()
 const path = require('path')
 const {v4: uuid } = require('uuid')
 
-const data = {}
-data.menu = require('../public/data/menu')
+const data = require('../public/data/menu')
 
 router.route('/')
     //get all restaurants
@@ -72,12 +71,5 @@ router.route('/restaurant/:id')
         data.menu = data.menu.filter((menuItem) => menuItem.id !== itemId)
         res.status(200).json({"response": menuItem})
      })
-
-    // // order food
-    // .post('/order', (menuItem
-
-    // })
-
-    // get menu item 
 
 module.exports = router

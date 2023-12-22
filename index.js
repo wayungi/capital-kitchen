@@ -25,6 +25,7 @@ app.use('/restaurants', require('./routes/restaurants'))
 app.use('/menu', require('./routes/menu'))
 app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
+app.use('/orders', require('./routes/orders'))
 
 // third party middleware
 const allowedList = ['http://127.0.0.1:3000', 'https://regex101.com', 'http://localhost:3000']
