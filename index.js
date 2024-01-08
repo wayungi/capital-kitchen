@@ -8,17 +8,23 @@ const cors =  require('cors')
 const corsOptions = require('./config/corsOptions')
 
 app.use(logger)
-app.use(express.urlencoded({extended: false}))
-app.use(express.json())
-app.use(express.static(path.join(__dirname, '/public')))
+app.use(cors())
 
-// routing
+app.use(express.urlencoded({extended: false})) // gets form data
+app.use(express.json()) // gets json data
+app.use(express.static(path.join(__dirname, '/public'))) // serve static files
 app.use('/restaurants', require('./routes/restaurants'))
 app.use('/menu', require('./routes/menu'))
 app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
-app.use(cors(corsOptions))
+
+app.get('^/$|index(.html)?', (req, res) => {
+    // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url
+    // res.sendFile('./views/index.html', { root: __dirname })
+    res.sendFile(path.join(__dirname, 'views', 'index.html')) /* */
+    // res.send('Hello World!')
+})
 
 app.all('*', (req, res) => { // catch all route
     res.status(404)
