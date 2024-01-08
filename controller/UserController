@@ -4,3 +4,6 @@ const UsersDB =  {
         this.users =  data
     }
 }
+const path = require(path)
+const fsPromises =  require('fs').promises
+const bcrypt =  require('bcrypt')
