@@ -1,0 +1,9 @@
+const UsersDB =  {
+    users: require('../model/users.json'),
+    setUsers: function (data) {
+        this.users =  data
+    }
+}
+const path = require(path)
+const fsPromises =  require('fs').promises
+const bcrypt =  require('bcrypt')
