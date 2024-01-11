@@ -11,7 +11,7 @@ const path = require('path')
 const fsPromises =  require('fs').promises
 const bcrypt =  require('bcrypt')
 
-const handleRegistration = async(req, res) => {
+const handleRegistration = (req, res) => {
     const { username, password } =  req.body
     // check if not blank
     if(!username || !password) res.status(400).json({'message': 'Username & Password are required'})
@@ -32,7 +32,23 @@ const handleRegistration = async(req, res) => {
             }
         });
     });
-    console.log(UsersDB.users)
 }
 
-module.exports = {handleRegistration}
+const handleLogin = (req, res) => {
+    //check if values are all filled
+    const { username, password } = req.body
+
+    //check for username match in db
+    const foundUser =  UsersDB.users.find((user) => user.username === username)
+    if(!foundUser) res.sendStatus(404)
+    // compare password
+    const match = bcrypt.compareSync(foundUser.password, hash); // true
+    // account for error
+    if(!match) res.sendStatus(403)
+    res.status(200).json({'message': `${foundUser.username} logged in`})
+}
+
+module.exports = { 
+    handleRegistration,
+    handleLogin
+}
