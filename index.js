@@ -18,7 +18,7 @@ app.use('/menu', require('./routes/menu'))
 app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
-app.use('/register', require('./routes/auth'))
+app.use('/auth', require('./routes/auth'))
 
 
 app.get('^/$|index(.html)?', (req, res) => {

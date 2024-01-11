@@ -42,7 +42,7 @@ const handleLogin = (req, res) => {
     const foundUser =  UsersDB.users.find((user) => user.username === username)
     if(!foundUser) res.sendStatus(404)
     // compare password
-    const match = bcrypt.compareSync(foundUser.password, hash); // true
+    const match = bcrypt.compareSync(password, foundUser.password); // true
     // account for error
     if(!match) res.sendStatus(403)
     res.status(200).json({'message': `${foundUser.username} logged in`})
