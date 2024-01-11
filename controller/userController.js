@@ -11,6 +11,10 @@ const path = require('path')
 const fsPromises =  require('fs').promises
 const bcrypt =  require('bcrypt')
 
+//jwt
+const jwt =  require('jsonwebtoken')
+require('dotenv').config()
+
 const handleRegistration = (req, res) => {
     const { username, password } =  req.body
     // check if not blank
@@ -42,8 +46,23 @@ const handleLogin = (req, res) => {
     if(!foundUser) res.sendStatus(404)
     // compare password
     const match = bcrypt.compareSync(password, foundUser.password); // true
-    // account for error
     if(!match) res.sendStatus(403)
+    const accessToken = jwt.sign(
+        { "username": foundUser.username },
+        process.env.ACCESS_TOKEN_SECRET,
+        {expiresIn: '30s'}
+    ) // do not pass in sensitive data like passwords as jwt payload
+    
+    const refrshToken = jwt.sign(
+        { "username": foundUser.username },
+        process.env.REFRESH_TOKEN_SECRET,
+        {expiresIn: '1d'}
+    ) 
+    //update the foundUser with a refreshToken
+    UsersDB.setUsers([
+        {...foundUser, refrshToken}, 
+        ...UsersDB.users.filter((user) => user.username !== foundUser.username)
+    ])
     res.status(200).json({'message': `${foundUser.username} logged in`})
 }
 
