@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 const UsersDB =  {
     users: require('../model/users.json'),
@@ -7,7 +7,7 @@ const UsersDB =  {
     }
 }
 
-const path = require(path)
+const path = require('path')
 const fsPromises =  require('fs').promises
 const bcrypt =  require('bcrypt')
 
@@ -28,10 +28,11 @@ const handleRegistration = async(req, res) => {
             }else{
                 const newUser = {id: uuidv4(), username, password: hash}
                 UsersDB.setUsers([...UsersDB.users, newUser])
+                res.status(201).json({'message': `${newUser.username} created`})
             }
         });
     });
     console.log(UsersDB.users)
-
-
 }
+
+module.exports = {handleRegistration}

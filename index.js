@@ -18,6 +18,8 @@ app.use('/menu', require('./routes/menu'))
 app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
+app.use('/register', require('./routes/auth'))
+
 
 app.get('^/$|index(.html)?', (req, res) => {
     // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url
