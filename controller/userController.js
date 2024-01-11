@@ -37,7 +37,6 @@ const handleRegistration = (req, res) => {
 const handleLogin = (req, res) => {
     //check if values are all filled
     const { username, password } = req.body
-
     //check for username match in db
     const foundUser =  UsersDB.users.find((user) => user.username === username)
     if(!foundUser) res.sendStatus(404)
