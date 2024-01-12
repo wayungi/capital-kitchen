@@ -8,16 +8,18 @@ const {
     disableRestaurant,
     enableRestaurant
 } = require('../controller/restaurantController')
-const verifyJWT =  require('../middleware/verifyJWT')
+const { verifyJWT } =  require('../middleware/verifyJWT')
+
+
 router.route('/')
     .post(verifyJWT, addRestaurant)    // add restaurnat
     .get( getAllRestaurants)    // get all restaurants
 router.route('/:id')
-    .put(verifyJWT, updateRestaurantData)    //edit restaurant
-    .delete(verifyJWT, deleteRestaurant)    // delete restaurant
+    .put( updateRestaurantData)    //edit restaurant
+    .delete( deleteRestaurant)    // delete restaurant
 router.route('/:id/disable')
-    .post(verifyJWT, disableRestaurant)    // disable restaurant
+    .post(disableRestaurant)    // disable restaurant
 router.route('/:id/enable')
-    .post(verifyJWT, enableRestaurant)    // enable restaurant
+    .post(enableRestaurant)    // enable restaurant
 
 module.exports = router

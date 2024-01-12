@@ -50,7 +50,7 @@ const handleLogin = (req, res) => {
     const accessToken = jwt.sign(
         { "username": foundUser.username },
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: '30s'}
+        {expiresIn: '60s'}
     ) // do not pass in sensitive data like passwords as jwt payload
     
     const refreshToken = jwt.sign(
