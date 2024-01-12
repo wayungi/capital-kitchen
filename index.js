@@ -22,6 +22,7 @@ app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
 app.use('/auth', require('./routes/auth'))
 app.use('/refresh', require('./routes/refreshToken'))
+app.use('/logout', require('./routes/logout'))
 
 
 app.get('^/$|index(.html)?', (req, res) => {
