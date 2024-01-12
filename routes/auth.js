@@ -4,13 +4,10 @@ const path = require('path')
 const { handleRegistration, handleLogin } = require('../controller/userController')
 
 
-// create account
+// register
 router.post('/', handleRegistration)
-
 // login
 router.post('/login', handleLogin)
-
-
 //logout
 
 module.exports = router
