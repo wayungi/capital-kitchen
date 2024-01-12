@@ -53,17 +53,24 @@ const handleLogin = (req, res) => {
         {expiresIn: '30s'}
     ) // do not pass in sensitive data like passwords as jwt payload
     
-    const refrshToken = jwt.sign(
+    const refreshToken = jwt.sign(
         { "username": foundUser.username },
         process.env.REFRESH_TOKEN_SECRET,
         {expiresIn: '1d'}
     ) 
+
     //update the foundUser with a refreshToken
     UsersDB.setUsers([
-        {...foundUser, refrshToken}, 
+        {...foundUser, refreshToken}, 
         ...UsersDB.users.filter((user) => user.username !== foundUser.username)
     ])
-    res.status(200).json({'message': `${foundUser.username} logged in`})
+    /* 
+        return the token to the front & remeber to keep it in memory / as httpOnly cookie wc is not 
+        accessible by js
+        A cookie is always sent with every request but httpOnly cookies are not accesible to js
+    */
+    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000})
+    res.status(200).json({accessToken})
 }
 
 module.exports = { 
