@@ -48,7 +48,7 @@ const handleLogin = (req, res) => {
     const accessToken = jwt.sign(
         { "username": foundUser.username },
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: '60s'}
+        {expiresIn: '30s'}
     ) // do not pass in sensitive data like passwords as jwt payload
     
     const refreshToken = jwt.sign(
@@ -73,9 +73,8 @@ const handleLogin = (req, res) => {
 
 const genAccessToken = (req, res) => {
     const cookies =  req.cookies
-    // console.log(req)
-    // console.log(cookies)
-    if(!cookies?.jwt) res.sendStatus(401)
+    console.log(cookies)
+    if(!cookies?.jwt) return res.sendStatus(401)
     const refreshToken =  cookies.jwt
 
     const foundUser =  UsersDB.users.find((user) => user.refreshToken === refreshToken)
@@ -89,14 +88,11 @@ const genAccessToken = (req, res) => {
             const accessToken =  jwt.sign(
                 {"username": decoded.username},
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: 15*60*1000 }
+                { expiresIn: '30s' }
             )
             res.json({ accessToken })
         }
     );
-    res.json
-
-
 }
 
 module.exports = { 
