@@ -39,14 +39,12 @@ const handleRegistration = (req, res) => {
 }
 
 const handleLogin = (req, res) => {
-    //check if values are all filled
     const { username, password } = req.body
-    //check for username match in db
     const foundUser =  UsersDB.users.find((user) => user.username === username)
     if(!foundUser) res.sendStatus(404)
-    // compare password
     const match = bcrypt.compareSync(password, foundUser.password); // true
     if(!match) res.sendStatus(403)
+
     const accessToken = jwt.sign(
         { "username": foundUser.username },
         process.env.ACCESS_TOKEN_SECRET,
@@ -73,7 +71,36 @@ const handleLogin = (req, res) => {
     res.status(200).json({accessToken})
 }
 
+const genAccessToken = (req, res) => {
+    const cookies =  req.cookies
+    // console.log(req)
+    // console.log(cookies)
+    if(!cookies?.jwt) res.sendStatus(401)
+    const refreshToken =  cookies.jwt
+
+    const foundUser =  UsersDB.users.find((user) => user.refreshToken === refreshToken)
+    if(!foundUser) res.sendStatus(403)
+
+    jwt.verify(
+        {"username": foundUser.username},
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+            if(err || foundUser.username !== decoded.username) res.sendStatus(403)
+            const accessToken =  jwt.sign(
+                {"username": decoded.username},
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: 15*60*1000 }
+            )
+            res.json({ accessToken })
+        }
+    );
+    res.json
+
+
+}
+
 module.exports = { 
     handleRegistration,
-    handleLogin
+    handleLogin,
+    genAccessToken
 }
