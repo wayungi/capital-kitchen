@@ -1,5 +1,5 @@
 const path = require('path')
-const fsPromises =  require('fs').promises
+const {writeFile} =  require('fs').promises
 const bcrypt =  require('bcrypt')
 const UsersDB =  {
     users: require('../model/users.json'),
@@ -7,6 +7,8 @@ const UsersDB =  {
         this.users =  data
     }
 }
+
+//console.log(UsersDB.users)
 
 //jwt
 const jwt =  require('jsonwebtoken')
@@ -18,7 +20,8 @@ const handleLogin = async(req, res) => {
     if(!foundUser) return res.sendStatus(404)
     const match = bcrypt.compareSync(password, foundUser.password); // true
     if(!match) return res.sendStatus(403)
-    if(foundUser.refreshToken !== "") return res.sendStatus(401) // catch multiple logins on same account
+    const isLoggedin = foundUser.refreshToken 
+    if(isLoggedin) return res.sendStatus(401) // catch multiple logins on same account
     // do not pass in sensitive data like passwords as jwt payload
     const accessToken = jwt.sign({ "username": foundUser.username },process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'}) 
     const refreshToken = jwt.sign({ "username": foundUser.username }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '1d'}) 
@@ -26,13 +29,12 @@ const handleLogin = async(req, res) => {
     UsersDB.setUsers([{...foundUser, refreshToken}, ...UsersDB.users.filter((user) => user.username !== foundUser.username)])
 
     /* write the nes users array to the file*/
-    const filePath =  path.join(__dirname, '..', 'model', 'users.json')
+    const filePath = path.join(__dirname, '..', 'model', 'users.json')
     try {
-        await fs.writeFile(filePath, JSON.stringify(UsersDB.users));
-      } catch (err) {
-        console.log(err);
-      }
-
+        await writeFile(filePath, JSON.stringify([{...foundUser, refreshToken}, ...UsersDB.users.filter((user) => user.username !== foundUser.username)]));
+    }catch(err){
+        return res.sendStatus(500)
+    }
     /* 
         return the token to the front & remeber to keep it in memory / as httpOnly cookie wc is not 
         accessible by js
