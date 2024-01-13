@@ -21,6 +21,8 @@ app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
 app.use('/register', require('./routes/register'))
+app.use('/login', require('./routes/login'))
+
 
 app.use('/auth', require('./routes/auth'))
 app.use('/refresh', require('./routes/refreshToken'))

@@ -7,7 +7,7 @@ const { handleRegistration, handleLogin } = require('../controller/userControlle
 // register
 // router.post('/', handleRegistration)
 // login
-router.post('/login', handleLogin)
+//router.post('/login', handleLogin)
 //logout
 
 module.exports = router
