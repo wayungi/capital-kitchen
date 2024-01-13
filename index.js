@@ -17,13 +17,12 @@ app.use(cookieParser()) // middleare for cookies
 app.use(express.static(path.join(__dirname, '/public'))) // serve static files
 app.use('/restaurants', require('./routes/restaurants'))
 app.use('/menu', require('./routes/menu'))
-app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
 app.use('/orders', require('./routes/orders'))
-app.use('/auth', require('./routes/auth'))
+app.use('/register', require('./routes/register'))
+app.use('/login', require('./routes/login'))
 app.use('/refresh', require('./routes/refreshToken'))
 app.use('/logout', require('./routes/logout'))
-
 
 app.get('^/$|index(.html)?', (req, res) => {
     // ^/$|index(.html)? = start with / and end with / or index.html/ index, allows / or /index.html or index in url

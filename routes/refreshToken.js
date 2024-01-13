@@ -1,6 +1,6 @@
 const express = require('express')
 const router =  express.Router()
-const { genAccessToken } = require('../controller/userController')
+const handleAccessToken = require('../controller/accessTokenController')
 
-router.route('/').get(genAccessToken)
+router.route('/').get(handleAccessToken)
 module.exports =  router
