@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const bcrypt =  require('bcrypt')
 const path = require('path')
-const fsPromises =  require('fs').promises
+const {writeFile} =  require('fs').promises
 const UsersDB =  {
     users: require('../model/users.json'),
     setUsers: function (data) {
@@ -18,12 +18,14 @@ const handleRegistration =  async (req, res) => {
     const hash = await bcrypt.hash(password, saltRounds)
     if(!hash) return res.sendStatus(500) 
     const newUser = {id: uuidv4(), username, password: hash}
+    try {
+        const filePath = path.join(__dirname, '..', 'model', 'users.json')
+        const promise = await writeFile(filePath, JSON.stringify([...UsersDB.users, newUser]));
+    }catch(err){
+        console.log(err)
+    }
     UsersDB.setUsers([...UsersDB.users, newUser])
-    console.log(UsersDB.users)
     res.status(201).json({'message': `${newUser.username} created`})
-
-
-    
 }
 
 module.exports = handleRegistration
