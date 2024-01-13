@@ -1,3 +1,5 @@
+const path = require('path')
+const fsPromises =  require('fs').promises
 const bcrypt =  require('bcrypt')
 const UsersDB =  {
     users: require('../model/users.json'),
@@ -10,7 +12,7 @@ const UsersDB =  {
 const jwt =  require('jsonwebtoken')
 require('dotenv').config()
 
-const handleLogin = (req, res) => {
+const handleLogin = async(req, res) => {
     const { username, password } = req.body
     const foundUser =  UsersDB.users.find((user) => user.username === username)
     if(!foundUser) return res.sendStatus(404)
@@ -22,6 +24,15 @@ const handleLogin = (req, res) => {
     const refreshToken = jwt.sign({ "username": foundUser.username }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '1d'}) 
     //update the foundUser with a refreshToken
     UsersDB.setUsers([{...foundUser, refreshToken}, ...UsersDB.users.filter((user) => user.username !== foundUser.username)])
+
+    /* write the nes users array to the file*/
+    const filePath =  path.join(__dirname, '..', 'model', 'users.json')
+    try {
+        await fs.writeFile(filePath, JSON.stringify(UsersDB.users));
+      } catch (err) {
+        console.log(err);
+      }
+
     /* 
         return the token to the front & remeber to keep it in memory / as httpOnly cookie wc is not 
         accessible by js
