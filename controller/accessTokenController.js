@@ -5,6 +5,7 @@ const UsersDB =  {
     }
 }
 
+
 //jwt
 const jwt =  require('jsonwebtoken')
 require('dotenv').config()
@@ -16,9 +17,10 @@ const handleAccessToken = (req, res) => {
     const foundUser =  UsersDB.users.find((user) => user.refreshToken === refreshToken)
     if(!foundUser) return res.sendStatus(403)
     jwt.verify(
-        {"username": foundUser.username},
+        refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
+            console.log(decoded)
             if(err || foundUser.username !== decoded.username) return res.sendStatus(403)
             const accessToken =  jwt.sign(
                 {"username": decoded.username},
