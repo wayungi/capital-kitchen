@@ -18,6 +18,7 @@ const handleRegistration = (req, res) => {
             if(err) return res.sendStatus(500)
             const newUser = {id: uuidv4(), username, password: hash}
             UsersDB.setUsers([...UsersDB.users, newUser])
+            console.log(newUser)
             res.status(201).json({'message': `${newUser.username} created`})
         });
     });
