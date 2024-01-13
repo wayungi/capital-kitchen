@@ -11,7 +11,7 @@ const handleRegistration = (req, res) => {
     const { username, password } =  req.body
     if(!username || !password) return res.status(400).json({'message': 'Username & Password are required'})
     const duplicate = UsersDB.users.find((person) => person.username === username)
-    if(duplicate) res.sendStatus(409) // conflict
+    if(duplicate) return res.sendStatus(409) // conflict
     const saltRounds = 10
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
