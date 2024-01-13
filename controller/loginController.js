@@ -16,6 +16,7 @@ const handleLogin = (req, res) => {
     if(!foundUser) return res.sendStatus(404)
     const match = bcrypt.compareSync(password, foundUser.password); // true
     if(!match) return res.sendStatus(403)
+    if(foundUser.refreshToken !== "") return res.sendStatus(401) // catch multiple logins on same account
     // do not pass in sensitive data like passwords as jwt payload
     const accessToken = jwt.sign({ "username": foundUser.username },process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'}) 
     const refreshToken = jwt.sign({ "username": foundUser.username }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '1d'}) 
