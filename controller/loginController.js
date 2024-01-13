@@ -40,7 +40,7 @@ const handleLogin = async(req, res) => {
         accessible by js
         A cookie is always sent with every request but httpOnly cookies are not accesible to js
     */
-    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000, secure:true})
+    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000})
     res.status(200).json({accessToken})
 }
 
