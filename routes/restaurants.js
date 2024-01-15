@@ -15,11 +15,11 @@ router.route('/')
     .post(verifyJWT, addRestaurant)    // add restaurnat
     .get( getAllRestaurants)    // get all restaurants
 router.route('/:id')
-    .put( updateRestaurantData)    //edit restaurant
-    .delete( deleteRestaurant)    // delete restaurant
+    .put(verifyJWT, updateRestaurantData)    //edit restaurant
+    .delete(verifyJWT, deleteRestaurant)    // delete restaurant
 router.route('/:id/disable')
-    .post(disableRestaurant)    // disable restaurant
+    .post(verifyJWT, disableRestaurant)    // disable restaurant
 router.route('/:id/enable')
-    .post(enableRestaurant)    // enable restaurant
+    .post(verifyJWT, enableRestaurant)    // enable restaurant
 
 module.exports = router

@@ -29,7 +29,6 @@ const handleLogin = async (req, res) => {
         "roles": roles
         }
     },
-    
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "30s" }
   );
