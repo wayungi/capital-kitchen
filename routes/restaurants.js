@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ROLES_LIST =  require('../config/roles_list')
 const verifyRoles =  require('../middleware/verifyRoles')
+const { verifyJWT } = require("../middleware/verifyJWT");
 const {
   addRestaurant,
   getAllRestaurants,
@@ -10,11 +11,10 @@ const {
   disableRestaurant,
   enableRestaurant,
 } = require("../controller/restaurantController");
-const { verifyJWT } = require("../middleware/verifyJWT");
 
 router
   .route("/")
-  .post(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), addRestaurant) // add restaurnat
+  .post(verifyJWT, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), addRestaurant) // add restaurnat
   .get(getAllRestaurants); // get all restaurants
 router
   .route("/:id")

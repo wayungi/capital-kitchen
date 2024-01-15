@@ -6,9 +6,7 @@ const verifyRoles = (...allowedRoles) => {
         */ 
         if(!req?.roles) return res.sendStatus(401) 
         const rolesArray = [...allowedRoles] // the roles required to access a route
-        console.log(rolesArray)
-        console.log(req.roles)
-        const isAllowed =  req.roles.map((role) => rolesArray.includes(roles)).find((val) => val === true)
+        const isAllowed =  req.roles.map((role) => rolesArray.includes(role)).find((val) => val === true)
         if(!isAllowed) return res.sendStatus(401)
         next()
     }
