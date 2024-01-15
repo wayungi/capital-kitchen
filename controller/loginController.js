@@ -1,7 +1,6 @@
 const path = require("path");
 const { writeFile } = require("fs").promises;
 const bcrypt = require("bcrypt");
-const ROLES_LIST = require('../config/roles_list')
 const UsersDB = {
   users: require("../model/users.json"),
   setUsers: function (data) {
@@ -22,7 +21,7 @@ const handleLogin = async (req, res) => {
   const isLoggedin = foundUser.refreshToken;
   if (isLoggedin) return res.sendStatus(401); // catch multiple logins on same account
   //get the user roles for the logged in user
-  const roles =  foundUser.roles
+  const roles =  Object.values(foundUser.roles)
   // do not pass in sensitive data like passwords as jwt payload
   const accessToken = jwt.sign(
     { "UserInfo": {
