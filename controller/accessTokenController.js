@@ -29,7 +29,7 @@ const handleAccessToken = (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30s" }
+      { expiresIn: "1h" }
     );
     res.json({ accessToken });
   });
