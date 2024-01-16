@@ -15,6 +15,11 @@ const menuSchema = new Schema({
         required: true
     },
 
+    restaurantName: {
+        type:String,
+        required: true
+    },
+
     path: String,
 
     desc: String
