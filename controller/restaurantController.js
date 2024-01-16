@@ -7,20 +7,23 @@ const Restaurant = require("../model/Restaurant");
 
 const addRestaurant = async (req, res) => {
   const { name, location } = req.body;
-  if( name == "" || location == "") return res.status(400).json({"message": "Please fillup all fields"})
-  const duplicate =  Restaurant.findOne({name}).exec()
-  if(duplicate) res.sendStatus(409) //conflict
+  if (name == "" || location == "")
+    return res.status(400).json({ message: "Please fillup all fields" });
+  const duplicate = await Restaurant.findOne({ name }).exec();
+  if (duplicate) return res.sendStatus(409); //conflict
   const restaurant = await Restaurant.create({
     name,
     location,
   });
-  if(!restaurant) return res.sendStatus(500) 
+  if (!restaurant) return res.sendStatus(500);
   res.json(restaurant);
 };
 
-const getAllRestaurants = (req, res) => {
+const getAllRestaurants = async (req, res) => {
+  const restaurantList = await Restaurant.find();
+  console.log(restaurantList);
   res.json({
-    response: data.restaurants,
+    response: restaurantList,
   });
 };
 
