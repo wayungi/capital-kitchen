@@ -10,23 +10,29 @@ const getMenu = async (req, res) => {
   res.status(200).json(menuList);
 };
 
-const addMenuItem = (req, res) => {
-  const { name, price, restaurantId, path, desc } = req.body;
+const addMenuItem = async(req, res) => {
+  const { name, price, restaurantId, restaurantName, path, desc } = req.body;
   if (
     name == "" ||
     price == "" ||
     restaurantId == "" ||
     path == "" ||
-    desc == ""
+    desc == "" ||
+    restaurantName == ""
   )
     return res.status(400).json({
       response: "Fill in all fields",
     });
 
-  const menuItem = Menu.create({
+    const duplicateMenu =  await Menu.findOne({name, restaurantName}).exec()     //check against duplicate entries
+    console.log(duplicateMenu)
+    if(duplicateMenu) return res.sendStatus(409)
+
+  const menuItem = await Menu.create({
     name,
     price,
     restaurantId,
+    restaurantName,
     path,
     desc,
   });
