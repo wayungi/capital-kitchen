@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose') 
 const { Schema } = mongoose;
 
 const restaurantSchema = new Schema({
@@ -10,6 +10,7 @@ const restaurantSchema = new Schema({
     type: String,
     required: true,
   },
+  image: String,
   status: {
     type: String,
     deafault: "down",
