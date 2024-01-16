@@ -27,19 +27,15 @@ const getAllRestaurants = async (req, res) => {
   });
 };
 
-const updateRestaurantData = (req, res) => {
-  const { name, location } = req.body;
+const updateRestaurantData = async (req, res) => {
+  const { _id, name, location } = req.body;
   if (name === "" || location == "")
-    res.status(400).json({ response: "invalid data" });
-  let restaurant = data.restaurants.find(
-    (restaurant) => restaurant.id === req.params.id
-  );
-  if (!restaurant) res.status("404").json({ response: "Not Found" });
-  data.restaurants = data.restaurants.filter(
-    (restaurant) => restaurant.id !== req.body.id
-  );
-  restaurant = { ...restaurant, ...req.body };
-  data.restaurants = [...data.restaurants, restaurant];
+    return res.status(400).json({ response: "Please fill up all fields" });
+  const restaurant = await Restaurant.findByIdAndUpdate(_id, {
+    name,
+    location,
+  });
+  if (!restaurant) res.status(404).json({ response: "No result found" });
   res.json({
     response: restaurant,
   });
