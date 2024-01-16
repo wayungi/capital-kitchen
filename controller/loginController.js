@@ -1,27 +1,18 @@
-const path = require("path");
-const { writeFile } = require("fs").promises;
 const bcrypt = require("bcrypt");
-const UsersDB = {
-  users: require("../model/users.json"),
-  setUsers: function (data) {
-    this.users = data;
-  },
-};
-
-//jwt
+const User =  require('../model/User')
+const mongoose = require('mongoose')
 const jwt = require("jsonwebtoken");
 
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;
-  const foundUser = UsersDB.users.find((user) => user.username === username);
+  const foundUser = await User.findOne({username}).exec()
+  console.log(foundUser)
   if (!foundUser) return res.sendStatus(404);
   const match = bcrypt.compareSync(password, foundUser.password); // true
   if (!match) return res.sendStatus(403);
-  const isLoggedin = foundUser.refreshToken;
-  if (isLoggedin) return res.sendStatus(401); // catch multiple logins on same account
-  //get the user roles for the logged in user
-  const roles =  Object.values(foundUser.roles)
-  // do not pass in sensitive data like passwords as jwt payload
+  const isAlreadyLoggedin = foundUser.refreshToken;
+  if (isAlreadyLoggedin) return res.sendStatus(401); // catch multiple logins on same account
+  const roles =  Object.values(foundUser.roles)  //get the user roles for the logged in user
   const accessToken = jwt.sign(
     { "UserInfo": {
         "username": foundUser.username,
@@ -37,24 +28,8 @@ const handleLogin = async (req, res) => {
     { expiresIn: "1d" }
   );
   //update the foundUser with a refreshToken
-  UsersDB.setUsers([
-    { ...foundUser, refreshToken },
-    ...UsersDB.users.filter((user) => user.username !== foundUser.username),
-  ]);
-
-  /* write the nes users array to the file*/
-  const filePath = path.join(__dirname, "..", "model", "users.json");
-  try {
-    await writeFile(
-      filePath,
-      JSON.stringify([
-        { ...foundUser, refreshToken },
-        ...UsersDB.users.filter((user) => user.username !== foundUser.username),
-      ])
-    );
-  } catch (err) {
-    return res.sendStatus(500);
-  }
+  const hasLoggedIn = await User.findOneAndUpdate({username: foundUser.username}, {refreshToken})
+  if(!hasLoggedIn) return res.sendStatus(500); 
   /* 
         return the token to the front & remeber to keep it in memory / as httpOnly cookie wc is not 
         accessible by js
