@@ -1,3 +1,4 @@
+require("dotenv").config(); // This can be reqired here and it applies to all files
 const express = require('express')
 const app = express()
 const { logger } = require('./middleware/logEvent')
@@ -7,8 +8,7 @@ const PORT = process.env.PORT || 3000
 const cors =  require('cors')
 const corsOptions = require('./config/corsOptions')
 const cookieParser = require('cookie-parser')
-require("dotenv").config(); // This can be reqired here and it applies to all files
-
+const mongoose =  require('mongoose')
 
 app.use(logger)
 app.use(cors())
