@@ -10,7 +10,7 @@ const getMenu = async (req, res) => {
   res.status(200).json(menuList);
 };
 
-const addMenuItem = async(req, res) => {
+const addMenuItem = async (req, res) => {
   const { name, price, restaurantId, restaurantName, path, desc } = req.body;
   if (
     name == "" ||
@@ -24,9 +24,8 @@ const addMenuItem = async(req, res) => {
       response: "Fill in all fields",
     });
 
-    const duplicateMenu =  await Menu.findOne({name, restaurantName}).exec()     //check against duplicate entries
-    console.log(duplicateMenu)
-    if(duplicateMenu) return res.sendStatus(409)
+  const duplicateMenu = await Menu.findOne({ name, restaurantName }).exec(); //check against duplicate entries
+  if (duplicateMenu) return res.sendStatus(409);
 
   const menuItem = await Menu.create({
     name,
@@ -36,19 +35,17 @@ const addMenuItem = async(req, res) => {
     path,
     desc,
   });
-  if(!menuItem) return res.sendStatus(500)
+  if (!menuItem) return res.sendStatus(500);
   res.json({ response: menuItem });
 };
 
-const getMenuByRestaurant = (req, res) => {
-  console.log(data.menu);
-  const restaurantMenu = data.menu.filter(
-    (menuItem) => menuItem.restaurantId === req.params.restaurantId
-  );
-  console.log(restaurantMenu);
-  if (!restaurantMenu)
-    res.status(200).json({ response: "No menu items found" });
-  res.status(200).json({ response: restaurantMenu });
+const getMenuByRestaurant = async (req, res) => {
+  const restaurantId = req.params?.restaurantId
+  if(!restaurantId) return res.sendStatus(400)
+  const menuList = await Menu.find({restaurantId})
+  if (! menuList)
+    return res.sendStatus(500)
+  res.status(200).json({ response:  menuList });
 };
 
 const editMenuItem = (req, res) => {
