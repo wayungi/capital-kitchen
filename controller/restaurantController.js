@@ -41,15 +41,12 @@ const updateRestaurantData = async (req, res) => {
   });
 };
 
-const deleteRestaurant = (req, res) => {
-  const restaurant = data.restaurants.find(
-    (restaurant) => restaurant.id === req.params.id
-  );
-  if (!restaurant) res.status("404").json({ response: "Not Found" });
-  data.restaurants = [
-    ...data.restaurants.filter((restaurant) => restaurant.id !== req.params.id),
-  ];
-  res.json({ response: restaurant });
+const deleteRestaurant = async (req, res) => {
+  const id = req.params?.id;
+  if(!id) return res.sendStatus(400)
+  const deletedRestaurant = await Restaurant.findOneAndDelete({ _id: id }); // returns Query
+  if (!deletedRestaurant) return res.sendStatus(404);
+  res.json({ response: deletedRestaurant });
 };
 
 const disableRestaurant = (req, res) => {
