@@ -1,20 +1,12 @@
-const UsersDB = {
-  users: require("../model/users.json"),
-  setUsers: function (data) {
-    this.users = data;
-  },
-};
-
-//jwt
+const User =  require('../model/User')
+const mongoose = require('mongoose')
 const jwt = require("jsonwebtoken");
 
-const handleAccessToken = (req, res) => {
+const handleAccessToken = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
   const refreshToken = cookies.jwt;
-  const foundUser = UsersDB.users.find(
-    (user) => user.refreshToken === refreshToken
-  );
+  const foundUser = await User.findOne({refreshToken}).exec()
   if (!foundUser) return res.sendStatus(403);
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err || foundUser.username !== decoded.username)
