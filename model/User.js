@@ -17,9 +17,11 @@ const userSchema = new Schema({
         },
         Admin: Number, 
         Editor: Number
-     },
+    },
+
     refreshToken: String
-});
+        
+})
 
 module.exports = mongoose.model('User', userSchema)
 

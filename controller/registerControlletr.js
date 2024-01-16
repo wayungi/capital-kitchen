@@ -1,6 +1,4 @@
-const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
-const path = require("path");
 const User =  require('../model/User')
 const mongoose = require('mongoose')
 
