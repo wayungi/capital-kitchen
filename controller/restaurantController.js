@@ -43,40 +43,29 @@ const updateRestaurantData = async (req, res) => {
 
 const deleteRestaurant = async (req, res) => {
   const id = req.params?.id;
-  if(!id) return res.sendStatus(400)
+  if (!id) return res.sendStatus(400);
   const deletedRestaurant = await Restaurant.findOneAndDelete({ _id: id }); // returns Query
   if (!deletedRestaurant) return res.sendStatus(404);
   res.json({ response: deletedRestaurant });
 };
 
-const disableRestaurant = (req, res) => {
-  let restaurant = data.restaurants.find(
-    (restaurant) => restaurant.id === req.params.id
-  );
-  if (!restaurant) res.status("404").json({ response: "Not Found" });
-  if (restaurant.status === "down")
-    res.status(209).json({ response: "Restaurant is already down " });
-  restaurant = { ...restaurant, status: "down" };
-  data.restaurants = [
-    ...data.restaurants.filter((item) => item.id !== restaurant.id),
-    restaurant,
-  ];
+//========test these later
+const disableRestaurant = async (req, res) => {
+  const _id = req.params?.id;
+  const deactivatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
+    status: "down",
+  });
+  if (!deactivatedRestaurantes) return res.sendStatus(404);
   res.json({ response: restaurant });
 };
 
-const enableRestaurant = (req, res) => {
-  let restaurant = data.restaurants.find(
-    (restaurant) => restaurant.id === req.params.id
-  );
-  if (!restaurant) res.status("404").json({ response: "Not Found" });
-  if (restaurant.status === "up")
-    res.status(209).json({ response: "Restaurant is already up " });
-  restaurant = { ...restaurant, status: "up" };
-  data.restaurants = [
-    ...data.restaurants.filter((item) => item.id !== restaurant.id),
-    restaurant,
-  ];
-  res.json({ response: restaurant });
+const enableRestaurant = async (req, res) => {
+  const _id = req.params?.id;
+  const activatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
+    status: "up",
+  });
+  if (!activatedRestaurantes) return res.sendStatus(404);
+  res.json({ response: activatedRestaurant });
 };
 
 module.exports = {
