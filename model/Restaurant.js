@@ -1,14 +1,22 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const restaurantSchema = new Schema({
-    name: string,
-    location: string,
-    status: string
+  name: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    deafault: "down",
+  },
 });
 
-module.exports = mongoose.model('Restaurant', restaurantSchema)
-
+module.exports = mongoose.model("Restaurant", restaurantSchema);
 
 /* 
     Just like in react, the file name is capitalized
