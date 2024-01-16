@@ -10,7 +10,6 @@ const UsersDB = {
 
 //jwt
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;

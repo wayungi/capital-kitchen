@@ -10,7 +10,6 @@ const UsersDB =  {
 
 //jwt
 const jwt =  require('jsonwebtoken')
-require('dotenv').config()
 
 const handleLogout = async (req, res) => {
     // delete access token on client
