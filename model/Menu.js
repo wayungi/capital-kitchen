@@ -2,19 +2,23 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const menuSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  image: String,
-  status: {
-    type: String,
-    deafault: "down",
-  },
+    name: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    restaurantId: {
+        type: String,
+        required: true
+    },
+
+    path: String,
+
+    desc: String
+
 });
 
 module.exports = mongoose.model("Menu", menuSchema);
