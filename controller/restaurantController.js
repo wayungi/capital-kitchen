@@ -1,7 +1,3 @@
-const { v4: uuid } = require("uuid");
-const data = {};
-data.restaurants = require("../public/data/restaurants");
-
 const mongoose = require("mongoose");
 const Restaurant = require("../model/Restaurant");
 
@@ -21,7 +17,6 @@ const addRestaurant = async (req, res) => {
 
 const getAllRestaurants = async (req, res) => {
   const restaurantList = await Restaurant.find();
-  console.log(restaurantList);
   res.json({
     response: restaurantList,
   });
@@ -49,22 +44,22 @@ const deleteRestaurant = async (req, res) => {
   res.json({ response: deletedRestaurant });
 };
 
-//========test these later
-const disableRestaurant = async (req, res) => {
+const disableRestaurant = async (req, res) => { // fix throw error when id in invalid
   const _id = req.params?.id;
   const deactivatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
     status: "down",
   });
-  if (!deactivatedRestaurantes) return res.sendStatus(404);
-  res.json({ response: restaurant });
+  if (!deactivatedRestaurant) return res.sendStatus(404);
+  res.json({ response: deactivatedRestaurant });
 };
 
-const enableRestaurant = async (req, res) => {
+const enableRestaurant = async (req, res) => { // fix throw error when id in invalid
   const _id = req.params?.id;
+  if (!_id) return res.sendStatus(404);
   const activatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
     status: "up",
   });
-  if (!activatedRestaurantes) return res.sendStatus(404);
+  if (!activatedRestaurant) return res.sendStatus(404);
   res.json({ response: activatedRestaurant });
 };
 
