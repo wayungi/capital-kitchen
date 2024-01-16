@@ -1,3 +1,4 @@
+require("dotenv").config(); // This can be reqired here and it applies to all files
 const express = require('express')
 const app = express()
 const { logger } = require('./middleware/logEvent')
@@ -7,6 +8,10 @@ const PORT = process.env.PORT || 3000
 const cors =  require('cors')
 const corsOptions = require('./config/corsOptions')
 const cookieParser = require('cookie-parser')
+const mongoose =  require('mongoose')
+const dbConnect =  require('./config/dbCon')
+
+dbConnect()
 
 app.use(logger)
 app.use(cors())
@@ -43,4 +48,8 @@ app.all('*', (req, res) => { // catch all route
 })
 
 app.use(errorHandler)
-app.listen(PORT, () => console.log(`server is running on port ${PORT}`))
+
+mongoose.connection.once('open', () => {
+    console.log('connected')
+    app.listen(PORT, () => console.log(`server is running on port ${PORT}`))
+})
