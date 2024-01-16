@@ -1,13 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const path = require("path");
-//const { writeFile } = require("fs").promises;
-// const UsersDB = {
-//   users: require("../model/users.json"),
-//   setUsers: function (data) {
-//     this.users = data;
-//   },
-// };
 const User =  require('../model/User')
 const mongoose = require('mongoose')
 
@@ -26,17 +19,6 @@ const handleRegistration = async (req, res) => {
     username,
     password: hash,
   });
-  /* try {
-     const filePath = path.join(__dirname, "..", "model", "users.json");
-    const promise = await writeFile(
-     filePath,
-       JSON.stringify([...UsersDB.users, newUser])
-    );
-  } catch (err) {
-    console.log(err);
-  }
-   UsersDB.setUsers([...UsersDB.users, newUser]);
-  */
  console.log(newUser)
   res.status(201).json({ message: `${newUser.username} created` });
 };
