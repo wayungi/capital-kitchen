@@ -1,9 +1,13 @@
-const {v4: uuid } = require('uuid')
-const data = require('../public/data/menu')
+// const {v4: uuid } = require('uuid')
+// const data = require('../public/data/menu')
+const mongoose = require("mongoose");
+const Menu = require("../model/Menu");
 
 // get all the menu items from all restauranrs
-const getMenu = (req, res) => {
-    res.json(data.menu)
+const getMenu = async (req, res) => {
+    const menuList =  await Menu.find()
+    if(!menuList) return res.sendStatus(500)
+    res.json(menuList)
 }
 
 const addMenuItem = (req, res) => {
