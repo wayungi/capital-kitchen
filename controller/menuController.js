@@ -72,11 +72,12 @@ const editMenuItem = async (req, res) => {
   res.status(200).json({ response: updatedMenu });
 };
 
-const deleteMenuItem = (req, res) => {
-  const menuItem = data.menu.find((menuItem) => menuItem.id === itemId);
-  if (!menuItem) res.status(200).json({ response: "Item not found" });
-  data.menu = data.menu.filter((menuItem) => menuItem.id !== itemId);
-  res.status(200).json({ response: menuItem });
+const deleteMenuItem = async (req, res) => {
+  const id = req.params?.id
+  if(!id) return res.sendStatus(400)
+  const deletedMenu = await Menu.findByIdAndDelete({_id: id})
+  if (!deletedMenu) return res.sendStatus(404)
+  res.status(200).json({ response: deletedMenu });
 };
 
 module.exports = {
