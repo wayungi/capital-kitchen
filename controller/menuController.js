@@ -1,16 +1,14 @@
-// const {v4: uuid } = require('uuid')
-// const data = require('../public/data/menu')
+
 const mongoose = require("mongoose");
 const Menu = require("../model/Menu");
 
-// get all the menu items from all restauranrs
-const getMenu = async (req, res) => {
+const getMenu = async (req, res) => { // get all the menu items from all restauranrs
   const menuList = await Menu.find();
   if (!menuList) return res.sendStatus(500);
   res.status(200).json(menuList);
 };
 
-const addMenuItem = async(req, res) => {
+const addMenuItem = async (req, res) => {
   const { name, price, restaurantId, restaurantName, path, desc } = req.body;
   if (
     name == "" ||
@@ -24,9 +22,8 @@ const addMenuItem = async(req, res) => {
       response: "Fill in all fields",
     });
 
-    const duplicateMenu =  await Menu.findOne({name, restaurantName}).exec()     //check against duplicate entries
-    console.log(duplicateMenu)
-    if(duplicateMenu) return res.sendStatus(409)
+  const duplicateMenu = await Menu.findOne({ name, restaurantName }).exec(); //check against duplicate entries
+  if (duplicateMenu) return res.sendStatus(409);
 
   const menuItem = await Menu.create({
     name,
@@ -36,47 +33,46 @@ const addMenuItem = async(req, res) => {
     path,
     desc,
   });
-  if(!menuItem) return res.sendStatus(500)
+  if (!menuItem) return res.sendStatus(500);
   res.json({ response: menuItem });
 };
 
-const getMenuByRestaurant = (req, res) => {
-  console.log(data.menu);
-  const restaurantMenu = data.menu.filter(
-    (menuItem) => menuItem.restaurantId === req.params.restaurantId
-  );
-  console.log(restaurantMenu);
-  if (!restaurantMenu)
-    res.status(200).json({ response: "No menu items found" });
-  res.status(200).json({ response: restaurantMenu });
+const getMenuByRestaurant = async (req, res) => {
+  const restaurantId = req.params?.restaurantId;
+  if (!restaurantId) return res.sendStatus(400);
+  const menuList = await Menu.find({ restaurantId });
+  if (!menuList) return res.sendStatus(500);
+  res.status(200).json({ response: menuList });
 };
 
-const editMenuItem = (req, res) => {
-  const { name, price, restaurantId, path, desc } = req.body;
+const editMenuItem = async (req, res) => {
+  const { _id, name, price, restaurantId, restaurantName, path, desc } =
+    req.body;
   if (
-    name === "" ||
-    price === "" ||
-    restaurantId === "" ||
-    (path === "") | (desc === "")
+    _id == "" ||
+    name == "" ||
+    price == "" ||
+    restaurantId == "" ||
+    restaurantName == "" ||
+    path == "" ||
+    desc == ""
   ) {
-    res.status(403).json({
-      response: "Invalid data",
-    });
+    return res.status(400).json({ response: "All fields must be filled in" });
   }
-  let menuItem = data.menu.find((menuItem) => menuItem.id === req.params.id);
-  if (!menuItem) res.status(200).json({ response: "No menu item found" });
-  data.menu = data.menu.filter((menu) => menu.id !== req.params.id);
-  menuItem = { ...menuItem, ...req.body };
-  data.menu = [...data.menu, menuItem];
 
-  console.log(data.menu);
-  res.status(200).json({
-    response: menuItem,
-  });
+  const updatedMenu = await Menu.findOneAndUpdate(
+    { _id },
+    { name, price, path, desc },
+    { new: true }
+  );
+  if (!updatedMenu) {
+    return res.sendStatus(500);
+  }
+
+  res.status(200).json({ response: updatedMenu });
 };
 
 const deleteMenuItem = (req, res) => {
-  const itemId = req.params.id;
   const menuItem = data.menu.find((menuItem) => menuItem.id === itemId);
   if (!menuItem) res.status(200).json({ response: "Item not found" });
   data.menu = data.menu.filter((menuItem) => menuItem.id !== itemId);

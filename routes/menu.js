@@ -14,7 +14,7 @@ router.route('/')
 router.route('/:restaurantId')
     .post(addMenuItem)    //add food
     .get( getMenuByRestaurant)    // get restaurant menus
-router.route('/restaurant/:id')
+router.route('/restaurant')
     .patch(editMenuItem)
     .delete(deleteMenuItem )     //delete food
 
