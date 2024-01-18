@@ -10,11 +10,15 @@ const restaurantSchema = new Schema({
     type: String,
     required: true,
   },
-  image: String,
+  path: {
+    type: String,
+    default: "https://picsum.photos/200"
+  },
   status: {
     type: String,
     deafault: "down",
   },
+  contact: String
 });
 
 module.exports = mongoose.model("Restaurant", restaurantSchema);
