@@ -44,30 +44,30 @@ const deleteRestaurant = async (req, res) => {
   res.json({ response: deletedRestaurant });
 };
 
-const disableRestaurant = async (req, res) => { // fix throw error when id in invalid
+const toggleActivity = async (req, res) => { // fix throw error when id in invalid
   const _id = req.params?.id;
-  const deactivatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
-    status: "down",
+  const toggledRestaurant = await Restaurant.findByIdAndUpdate(_id, {
+    active: !active
   });
-  if (!deactivatedRestaurant) return res.sendStatus(404);
-  res.json({ response: deactivatedRestaurant });
+  if (!toggledRestaurant) return res.sendStatus(404);
+  res.json({ response: toggledRestaurant });
 };
 
-const enableRestaurant = async (req, res) => { // fix throw error when id in invalid
-  const _id = req.params?.id;
-  if (!_id) return res.sendStatus(404);
-  const activatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
-    status: "up",
-  });
-  if (!activatedRestaurant) return res.sendStatus(404);
-  res.json({ response: activatedRestaurant });
-};
+// const enableRestaurant = async (req, res) => { // fix throw error when id in invalid
+//   const _id = req.params?.id;
+//   if (!_id) return res.sendStatus(404);
+//   const activatedRestaurant = await Restaurant.findByIdAndUpdate(_id, {
+//     status: "up",
+//   });
+//   if (!activatedRestaurant) return res.sendStatus(404);
+//   res.json({ response: activatedRestaurant });
+// };
 
 module.exports = {
   addRestaurant,
   getAllRestaurants,
   updateRestaurantData,
   deleteRestaurant,
-  disableRestaurant,
-  enableRestaurant,
+  toggleActivity,
+  // enableRestaurant,
 };
