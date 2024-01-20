@@ -14,9 +14,9 @@ const restaurantSchema = new Schema({
     type: String,
     default: "https://picsum.photos/200"
   },
-  status: {
-    type: String,
-    deafault: "down",
+  active: {
+    type: Boolean,
+    deafault: false,
   },
   contact: String
 });

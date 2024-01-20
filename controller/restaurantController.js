@@ -46,8 +46,11 @@ const deleteRestaurant = async (req, res) => {
 
 const toggleActivity = async (req, res) => { // fix throw error when id in invalid
   const _id = req.params?.id;
+  const {active} = req.body
+
+  console.log(_id)
   const toggledRestaurant = await Restaurant.findByIdAndUpdate(_id, {
-    active: !active
+    active
   });
   if (!toggledRestaurant) return res.sendStatus(404);
   res.json({ response: toggledRestaurant });
