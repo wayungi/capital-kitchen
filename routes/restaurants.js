@@ -17,7 +17,7 @@ router
   .get(getAllRestaurants); // get all restaurants
 router
   .route("/:id")
-  .put(verifyJWT, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), updateRestaurantData) //edit restaurant
+  .put(/*verifyJWT, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),*/ updateRestaurantData) //edit restaurant
   .delete(/*verifyJWT, verifyRoles(ROLES_LIST.Admin),*/ deleteRestaurant); // delete restaurant
 router.route("/activity/:id").put(/*verifyJWT, verifyRoles(ROLES_LIST.Admin),*/ toggleActivity); // disable restaurant
 //router.route("/:id/enable").post(verifyJWT, verifyRoles(ROLES_LIST.Admin), enableRestaurant); // enable restaurant

@@ -16,7 +16,7 @@ const restaurantSchema = new Schema({
   },
   active: {
     type: Boolean,
-    deafault: false,
+    default: false,
   },
   contact: String
 });
