@@ -4,17 +4,21 @@ const { Schema } = mongoose;
 const restaurantSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Name is required"]
   },
   location: {
     type: String,
-    required: true,
+    required: [true, "Location is required"]
   },
-  image: String,
-  status: {
+  path: {
     type: String,
-    deafault: "down",
+    default: "https://picsum.photos/200"
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  contact: String
 });
 
 module.exports = mongoose.model("Restaurant", restaurantSchema);
