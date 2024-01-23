@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 const restaurantSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Name is required"]
   },
   location: {
     type: String,
-    required: true,
+    required: [true, "Location is required"]
   },
   path: {
     type: String,
