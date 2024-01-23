@@ -3,11 +3,12 @@ const User =  require('../model/User')
 const mongoose = require('mongoose')
 
 const handleRegistration = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password)
+  console.log(req.body)
+  const { username, password, contact, email} = req.body;
+  if (!username || !password || !contact || !email)
     return res
       .status(400)
-      .json({ message: "Username & Password are required" });
+      .json({ message: "All fields are required" });
   const duplicate = await User.findOne({username}).exec();
   if (duplicate) return res.sendStatus(409); // conflict
   const saltRounds = 10;
@@ -16,6 +17,8 @@ const handleRegistration = async (req, res) => {
   const newUser = await User.create({
     username,
     password: hash,
+    contact,
+    email
   });
  console.log(newUser)
   res.status(201).json({ message: `${newUser.username} created` });
